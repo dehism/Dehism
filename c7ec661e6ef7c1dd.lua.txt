@@ -1,0 +1,10 @@
+-- ts file was generated at discord.gg/25ms
+
+local fenv = getfenv()
+
+fenv.__SECROVIA__ = 'This obfuscated script is protected via https://secrovia.com. Any attempt to inspect, debug, patch, or otherwise defeat this protection is unlawful and will be prosecuted to the fullest extent permitted by law. License ID: LKNH-TITR-CTBM-CF3D-F6IW-TGOK-DUN7-OVDW'
+
+local _ = fenv._ENV
+local _ = fenv.jit
+
+error('line 12: Secrovia VM Runtime Error: attempt to call a nil value')
