@@ -62,7 +62,8 @@ local function x(y)
 	return "Common", q.Common
 end
 
-local function E(y)
+local function E(y, source)
+	source = source or "MAP"
 	local F = r()
 	if not F or n == "" then return end
 	local A, G = x(y)
@@ -75,16 +76,20 @@ local function E(y)
 	local N = string.format("• **User:** `%s`\n• **Display:** `%s`\n• **Level:** `%s`", j.Name, j.DisplayName, tostring(I))
 	local O = string.format("• **Location:** `%s`\n• **Players:** `%d/12`", s(), J)
 	local P = string.format("||🔗 [Join Server (PC)](%s)||\n||📱 [Join Server (Mobile)](%s)||", K, L)
-	local Q = G.ping ~= "" and string.format("%s **🚨 %s [%s] SPAWNED!**", G.ping, y:upper(), A:upper()) or string.format("**🚨 %s [%s] SPAWNED!**", y:upper(), A:upper())
+	
+	local titleText = source == "INVENTORY" and string.format("🎒 [%s] FRUIT ADDED TO INVENTORY!", A:upper()) or string.format("🍎 [%s] FRUIT SPAWNED IN MAP", A:upper())
+	local Q = G.ping ~= "" and string.format("%s **🚨 %s [%s] OBTAINED (%s)!**", G.ping, y:upper(), A:upper(), source) or string.format("**🚨 %s [%s] OBTAINED (%s)!**", y:upper(), A:upper(), source)
+	
 	local R = h:JSONEncode({
 		content = Q,
 		username = "DEHA ESP Notifier",
 		avatar_url = "https://i.imgur.com/W2d0f3g.png",
 		embeds = {{
-			title = string.format("🍎 [%s] FRUIT SPAWNED IN MAP", A:upper()),
+			title = titleText,
 			color = G.color,
 			fields = {
 				{name = "🍎 Fruit Name", value = string.format("**%s**", y), inline = false},
+				{name = "📦 Source", value = string.format("**%s**", source), inline = true},
 				{name = "👤 Player Info", value = N, inline = true},
 				{name = "🌐 Server Info", value = O, inline = true},
 				{name = "🚀 Direct Links (Click to Reveal)", value = P, inline = false},
@@ -120,6 +125,15 @@ local function W(X)
 	if not Y:find("fruit") then return false end
 	if not (X:FindFirstChild("Handle") or X:FindFirstChildWhichIsA("BasePart")) then return false end
 	return true
+end
+
+local function checkInventoryFruit(item)
+	if not item:IsA("Tool") then return false end
+	local name = item.Name:lower()
+	if name:find("fruit") then
+		return true
+	end
+	return false
 end
 
 local function Z()
@@ -171,7 +185,6 @@ local function a1(a2)
 		local hrp = char and char:FindFirstChild("HumanoidRootPart")
 
 		if hrp then
-			-- Calculate Euclidean distance between Player and Fruit
 			local dist = math.floor((hrp.Position - a3.Position).Magnitude / 3 + 0.5)
 			a5.Text = string.format("%s [%d M]", a2.Name, dist)
 		else
@@ -188,7 +201,7 @@ local function ac()
 			ad = true
 			a1(D)
 			S("🍎 " .. D.Name .. " is already spawned!")
-			E(D.Name)
+			E(D.Name, "MAP")
 			task.wait(0.1)
 		end
 	end
@@ -296,9 +309,46 @@ b.ChildAdded:Connect(function(_)
 			S("🍎 " .. _.Name .. " has spawned!")
 			U()
 		end
-		E(_.Name)
+		E(_.Name, "MAP")
 	end
 end)
+
+local processedTools = {}
+
+local function processInventoryItem(item)
+	if checkInventoryFruit(item) and not processedTools[item] then
+		processedTools[item] = true
+		S("🎁 " .. item.Name .. " received in inventory!")
+		U()
+		E(item.Name, "INVENTORY")
+	end
+end
+
+local backpack = j:WaitForChild("Backpack")
+backpack.ChildAdded:Connect(processInventoryItem)
+
+for _, item in ipairs(backpack:GetChildren()) do
+	if checkInventoryFruit(item) then
+		processedTools[item] = true
+	end
+end
+
+local function setupCharacterListener(char)
+	if not char then return end
+	
+	for _, item in ipairs(char:GetChildren()) do
+		if checkInventoryFruit(item) then
+			processedTools[item] = true
+		end
+	end
+
+	char.ChildAdded:Connect(processInventoryItem)
+end
+
+if j.Character then
+	setupCharacterListener(j.Character)
+end
+j.CharacterAdded:Connect(setupCharacterListener)
 
 d.InputBegan:Connect(function(ap, aq)
 	if aq then return end
