@@ -99,7 +99,7 @@ local function E(y, source)
 		}}
 	})
 	pcall(function()
-		F({Url = n, Method = "POST", Headers = {["Content-Type"] =="application/json"}, Body = R})
+		F({Url = n, Method = "POST", Headers = {["Content-Type"] = "application/json"}, Body = R})
 	end)
 end
 
@@ -324,40 +324,37 @@ local function processInventoryItem(item)
 	end
 end
 
-local backpack = j:WaitForChild("Backpack")
-backpack.ChildAdded:Connect(processInventoryItem)
-
-local function setupCharacterListener(char)
-	if not char then return end
-	char.ChildAdded:Connect(processInventoryItem)
+local function scanInventory()
+	local bp = j:FindFirstChild("Backpack")
+	if bp then
+		for _, item in ipairs(bp:GetChildren()) do
+			processInventoryItem(item)
+		end
+	end
+	local char = j.Character
+	if char then
+		for _, item in ipairs(char:GetChildren()) do
+			processInventoryItem(item)
+		end
+	end
 end
 
-if j.Character then
-	setupCharacterListener(j.Character)
+for _, item in ipairs(j:WaitForChild("Backpack"):GetChildren()) do
+	if checkInventoryFruit(item) then
+		processedTools[item] = true
+	end
 end
-j.CharacterAdded:Connect(setupCharacterListener)
 
 task.spawn(function()
 	while true do
-		local bp = j:FindFirstChild("Backpack")
-		if bp then
-			for _, item in ipairs(bp:GetChildren()) do
-				processInventoryItem(item)
-			end
-		end
-		local char = j.Character
-		if char then
-			for _, item in ipairs(char:GetChildren()) do
-				processInventoryItem(item)
-			end
-		end
-		task.wait(1)
+		task.wait(1.5)
+		pcall(scanInventory)
 	end
 end)
 
 d.InputBegan:Connect(function(ap, aq)
 	if aq then return end
-	if not o and ap.KeyCode == l then
+	if ap.KeyCode == l then
 		ae()
 	end
 end)
