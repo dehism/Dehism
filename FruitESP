@@ -20,7 +20,20 @@ local p = o and "Mobile" or "PC"
 print(string.format("[DEHA Framework] Device Detected: %s (TouchEnabled: %s | Platform: %s)", p, tostring(d.TouchEnabled), tostring(d:GetPlatform().Name)))
 
 local q = {
-	Special = {color = 16711935, ping = "@everyone", ansi = "\27[1;35m", fruits = {"Galaxy Empyrean Kitsune", "Empyrean Kitsune", "Fiend Yeti", "Divine Portal", "Purple Lightning"}},
+	Special = {
+		color = 16711935, 
+		ping = "@everyone", 
+		ansi = "\27[1;35m", 
+		fruits = {
+			"Permanent Dragon Token", "Fiend Yeti", "Galaxy Empyrean Kitsune", "Ember West Dragon",
+			"Crimson Kitsune", "Meme-Meme", "Divine Portal", "Purple Lightning", "Parrot",
+			"Red Lightning", "Yellow Lightning", "Green Lightning", "Werewolf", "Rose Quartz Diamond",
+			"Emerald Diamond", "Topaz Diamond", "Ruby Diamond", "Dragon Token", "Eclipse",
+			"Super Spirit Pain", "Torment Pain", "Sadness Pain", "Frustration Pain", "Celestial Pain",
+			"Eagle Requiem", "Eagle Glacier", "Eagle Matrix", "Celebration Bomb", "Azura Bomb",
+			"Thermite Bomb", "Nuclear Bomb"
+		}
+	},
 	Common = {color = 9803157, ping = "", ansi = "\27[1;30m", fruits = {"Rocket", "Spin", "Blade", "Spring", "Bomb", "Smoke", "Spike"}},
 	Uncommon = {color = 3447003, ping = "", ansi = "\27[1;34m", fruits = {"Flame", "Ice", "Sand", "Dark", "Eagle", "Diamond"}},
 	Rare = {color = 10181046, ping = "", ansi = "\27[1;36m", fruits = {"Light", "Rubber", "Ghost", "Magma"}},
@@ -147,9 +160,17 @@ end
 local function checkInventoryFruit(item)
 	if not item:IsA("Tool") then return false end
 	local name = item.Name:lower()
-	if name:find("fruit") or name:find("kitsune") or name:find("yeti") or name:find("portal") or name:find("lightning") then
-		return true
+	
+	-- Check if item is a fruit
+	if name:find("fruit") then return true end
+
+	-- Check if item matches any Special limited skin name
+	for _, skinName in ipairs(q.Special.fruits) do
+		if name:find(skinName:lower(), 1, true) then
+			return true
+		end
 	end
+	
 	return false
 end
 
