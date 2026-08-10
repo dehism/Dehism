@@ -20,6 +20,7 @@ local p = o and "Mobile" or "PC"
 print(string.format("[DEHA Framework] Device Detected: %s (TouchEnabled: %s | Platform: %s)", p, tostring(d.TouchEnabled), tostring(d:GetPlatform().Name)))
 
 local q = {
+	Special = {color = 16711935, ping = "@everyone", ansi = "\27[1;35m", fruits = {"Galaxy Empyrean Kitsune", "Empyrean Kitsune", "Fiend Yeti", "Divine Portal", "Purple Lightning"}},
 	Common = {color = 9803157, ping = "", ansi = "\27[1;30m", fruits = {"Rocket", "Spin", "Blade", "Spring", "Bomb", "Smoke", "Spike"}},
 	Uncommon = {color = 3447003, ping = "", ansi = "\27[1;34m", fruits = {"Flame", "Ice", "Sand", "Dark", "Eagle", "Diamond"}},
 	Rare = {color = 10181046, ping = "", ansi = "\27[1;36m", fruits = {"Light", "Rubber", "Ghost", "Magma"}},
@@ -53,10 +54,26 @@ local function s()
 end
 
 local function x(y)
-	local z = y:gsub(" Fruit", ""):gsub(" %-.*", ""):lower()
+	local rawName = y:lower()
+	
+	-- Check Special skins first to avoid falling back to base fruit rarities
+	for _, skinName in ipairs(q.Special.fruits) do
+		if rawName:find(skinName:lower(), 1, true) then
+			return "Special", q.Special
+		end
+	end
+
+	-- Clean name for standard fruits
+	local z = y:gsub(" Fruit", ""):gsub("%s*%b()", ""):gsub(" %-.*", "")
+	z = z:match("^%s*(.-)%s*$"):lower()
+
 	for A, B in pairs(q) do
-		for C, D in ipairs(B.fruits) do
-			if D:lower() == z then return A, B end
+		if A ~= "Special" then
+			for C, D in ipairs(B.fruits) do
+				if D:lower() == z or z:find(D:lower(), 1, true) then 
+					return A, B 
+				end
+			end
 		end
 	end
 	return "Common", q.Common
@@ -77,7 +94,7 @@ local function E(y, source)
 	local O = string.format("• **Location:** `%s`\n• **Players:** `%d/12`", s(), J)
 	local P = string.format("||🔗 [Join Server (PC)](%s)||\n||📱 [Join Server (Mobile)](%s)||", K, L)
 	
-	local titleText = source == "INVENTORY" and string.format("🎒 [%s] FRUIT ADDED TO INVENTORY!", A:upper()) or string.format("🍎 [%s] FRUIT SPAWNED IN MAP", A:upper())
+	local titleText = source == "INVENTORY" and string.format("🎒 [%s] ITEM ADDED TO INVENTORY!", A:upper()) or string.format("🍎 [%s] ITEM SPAWNED IN MAP", A:upper())
 	local Q = G.ping ~= "" and string.format("%s **🚨 %s [%s] OBTAINED (%s)!**", G.ping, y:upper(), A:upper(), source) or string.format("**🚨 %s [%s] OBTAINED (%s)!**", y:upper(), A:upper(), source)
 	
 	local R = h:JSONEncode({
@@ -88,7 +105,7 @@ local function E(y, source)
 			title = titleText,
 			color = G.color,
 			fields = {
-				{name = "🍎 Fruit Name", value = string.format("**%s**", y), inline = false},
+				{name = "🍎 Item Name", value = string.format("**%s**", y), inline = false},
 				{name = "📦 Source", value = string.format("**%s**", source), inline = true},
 				{name = "👤 Player Info", value = N, inline = true},
 				{name = "🌐 Server Info", value = O, inline = true},
@@ -130,7 +147,7 @@ end
 local function checkInventoryFruit(item)
 	if not item:IsA("Tool") then return false end
 	local name = item.Name:lower()
-	if name:find("fruit") then
+	if name:find("fruit") or name:find("kitsune") or name:find("yeti") or name:find("portal") or name:find("lightning") then
 		return true
 	end
 	return false
@@ -154,6 +171,9 @@ local function a1(a2)
 	local a3 = a2:FindFirstChild("Handle") or a2:FindFirstChildWhichIsA("BasePart")
 	if not a3 or a3:FindFirstChild("FruitESP") then return end
 
+	local rarityName, rarityData = x(a2.Name)
+	local tagColor = (rarityName == "Special") and Color3.fromRGB(255, 0, 255) or m
+
 	local a4 = Instance.new("BillboardGui")
 	a4.Name = "FruitESP"
 	a4.Size = UDim2.new(0, 200, 0, 50)
@@ -165,7 +185,7 @@ local function a1(a2)
 	local a5 = Instance.new("TextLabel")
 	a5.Size = UDim2.new(1, 0, 1, 0)
 	a5.BackgroundTransparency = 1
-	a5.TextColor3 = m
+	a5.TextColor3 = tagColor
 	a5.TextSize = 16
 	a5.Font = Enum.Font.SourceSansBold
 	a5.TextStrokeTransparency = 0
@@ -353,7 +373,6 @@ task.spawn(function()
 end)
 
 d.InputBegan:Connect(function(ap, aq)
-	if aq then return end
 	if ap.KeyCode == l then
 		ae()
 	end
