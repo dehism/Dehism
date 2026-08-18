@@ -1,0 +1,301 @@
+-- Database for Server-Spawned Ground Fruit MeshIDs
+local FruitMeshDB = {
+	-- Rocket Fruit
+	["15060012861"] = "Rocket Fruit",
+	["15060012848"] = "Rocket Fruit",
+	["15060012853"] = "Rocket Fruit",
+	["15060012856"] = "Rocket Fruit",
+	["15060012905"] = "Rocket Fruit",
+
+	-- Spin Fruit
+	["15057683975"] = "Spin Fruit",
+	["15057683999"] = "Spin Fruit",
+	["15057684015"] = "Spin Fruit",
+
+	-- Smoke Fruit
+	["15116696973"] = "Smoke Fruit",
+	["15116696941"] = "Smoke Fruit",
+	["15116696951"] = "Smoke Fruit",
+	["9307787690"]  = "Smoke Fruit",
+
+	-- Blade Fruit
+	["15104782377"] = "Blade Fruit",
+	["15104782364"] = "Blade Fruit",
+	["15104782374"] = "Blade Fruit",
+	["15104782375"] = "Blade Fruit",
+
+	-- Bomb Fruit
+	["15116740364"] = "Bomb Fruit",
+	["15116740372"] = "Bomb Fruit",
+	["15116740355"] = "Bomb Fruit",
+	["15116740371"] = "Bomb Fruit",
+	["15116740356"] = "Bomb Fruit",
+
+	-- Spike Fruit
+	["15107005807"] = "Spike Fruit",
+	["15107005810"] = "Spike Fruit",
+	["15107005815"] = "Spike Fruit",
+	["15107005814"] = "Spike Fruit",
+	["15107005800"] = "Spike Fruit",
+	["15107005801"] = "Spike Fruit",
+	["15107005803"] = "Spike Fruit",
+
+	-- Spring Fruit
+	["15105281957"] = "Spring Fruit",
+	["15105281951"] = "Spring Fruit",
+	["15105281947"] = "Spring Fruit",
+	["15105281948"] = "Spring Fruit",
+
+	-- Dark Fruit
+	["15111553409"] = "Dark Fruit",
+	["15111553395"] = "Dark Fruit",
+	["15111553397"] = "Dark Fruit",
+	["15111553430"] = "Dark Fruit",
+	["15111553471"] = "Dark Fruit",
+	["15111553473"] = "Dark Fruit",
+
+	-- Sand Fruit
+	["15111517529"] = "Sand Fruit",
+	["15111517528"] = "Sand Fruit",
+	["15111517558"] = "Sand Fruit",
+
+	-- Flame Fruit
+	["112461342251051"] = "Flame Fruit",
+	["84599223955940"]  = "Flame Fruit",
+	["96819846101654"]  = "Flame Fruit",
+	["71296207199529"]  = "Flame Fruit",
+
+	-- Ice Fruit
+	["15100433167"] = "Ice Fruit",
+	["15100433160"] = "Ice Fruit",
+	["15100433164"] = "Ice Fruit",
+	["15100433172"] = "Ice Fruit",
+
+	-- Eagle Fruit
+	["97865119140018"]  = "Eagle Fruit",
+	["128089773105475"] = "Eagle Fruit",
+	["95430871974078"]  = "Eagle Fruit",
+
+	-- Diamond Fruit
+	["15112600534"] = "Diamond Fruit",
+	["15112600498"] = "Diamond Fruit",
+	["15112600500"] = "Diamond Fruit",
+	["15112600501"] = "Diamond Fruit",
+	["15112600503"] = "Diamond Fruit",
+
+	-- Ghost Fruit
+	["15112333093"] = "Ghost Fruit",
+	["15112333071"] = "Ghost Fruit",
+	["15112333083"] = "Ghost Fruit",
+
+	-- Light Fruit
+	["15100283484"] = "Light Fruit",
+	["15100283479"] = "Light Fruit",
+	["15100283494"] = "Light Fruit",
+	["15100283482"] = "Light Fruit",
+	["15100283505"] = "Light Fruit",
+	["15100283508"] = "Light Fruit",
+
+	-- Rubber Fruit
+	["15104817760"] = "Rubber Fruit",
+	["15104817762"] = "Rubber Fruit",
+	["15104817738"] = "Rubber Fruit",
+
+	-- Magma Fruit
+	["15105350415"] = "Magma Fruit",
+	["15105350405"] = "Magma Fruit",
+	["15105350392"] = "Magma Fruit",
+	["15105350377"] = "Magma Fruit",
+
+	-- Spider Fruit
+	["15116967784"] = "Spider Fruit",
+	["15116967801"] = "Spider Fruit",
+	["15116967832"] = "Spider Fruit",
+	["15116967821"] = "Spider Fruit",
+	["15116967828"] = "Spider Fruit",
+
+	-- Phoenix Fruit
+	["15100246632"] = "Phoenix Fruit",
+	["15100246600"] = "Phoenix Fruit",
+	["15100246626"] = "Phoenix Fruit",
+	["15100246640"] = "Phoenix Fruit",
+	["15100246653"] = "Phoenix Fruit",
+	["15100246669"] = "Phoenix Fruit",
+	["15100246670"] = "Phoenix Fruit",
+	["15100246674"] = "Phoenix Fruit",
+	["15100246679"] = "Phoenix Fruit",
+	["15100246691"] = "Phoenix Fruit",
+	["15100246617"] = "Phoenix Fruit",
+
+	-- Lightning Fruit
+	["15116747420"] = "Lightning Fruit",
+	["15116747433"] = "Lightning Fruit",
+	["15116747423"] = "Lightning Fruit",
+	["15116747435"] = "Lightning Fruit",
+	["15116747439"] = "Lightning Fruit",
+	["15116747443"] = "Lightning Fruit",
+	["15116747452"] = "Lightning Fruit",
+	["15116747451"] = "Lightning Fruit",
+
+	-- Buddha Fruit
+	["15100313696"] = "Buddha Fruit",
+	["15100313717"] = "Buddha Fruit",
+	["15100313720"] = "Buddha Fruit",
+	["15100313699"] = "Buddha Fruit",
+	["15100313702"] = "Buddha Fruit",
+	["15100313704"] = "Buddha Fruit",
+
+	-- Creation Fruit
+	["85809853722407"]  = "Creation Fruit",
+	["103152797185088"] = "Creation Fruit",
+	["105539911935567"] = "Creation Fruit",
+	["120307465031407"] = "Creation Fruit",
+	["116151149526063"] = "Creation Fruit",
+	["119613014098747"] = "Creation Fruit",
+	["99411690976028"]  = "Creation Fruit",
+	["122832309561853"] = "Creation Fruit",
+	["94442317060209"]  = "Creation Fruit",
+	["73270893579770"]  = "Creation Fruit",
+	["89477866336962"]  = "Creation Fruit",
+	["84379354218249"]  = "Creation Fruit",
+	["82836883401581"]  = "Creation Fruit",
+
+	-- Quake Fruit
+	["15057718441"] = "Quake Fruit",
+	["15057718501"] = "Quake Fruit",
+	["15057718463"] = "Quake Fruit",
+	["15057718450"] = "Quake Fruit",
+
+	-- Pain Fruit
+	["15116721173"] = "Pain Fruit",
+	["15116721204"] = "Pain Fruit",
+	["15116721199"] = "Pain Fruit",
+	["15116721197"] = "Pain Fruit",
+	["15116721235"] = "Pain Fruit",
+	["15116721239"] = "Pain Fruit",
+
+	-- Portal Fruit
+	["15112215862"] = "Portal Fruit",
+	["15112215868"] = "Portal Fruit",
+	["15112215887"] = "Portal Fruit",
+	["15112215886"] = "Portal Fruit",
+	["15112215912"] = "Portal Fruit",
+	["15112215934"] = "Portal Fruit",
+	["15112215941"] = "Portal Fruit",
+	["15112215931"] = "Portal Fruit",
+
+	-- Love Fruit
+	["15116730102"] = "Love Fruit",
+	["15116730093"] = "Love Fruit",
+	["15116730105"] = "Love Fruit",
+	["15116730094"] = "Love Fruit",
+	["15116730129"] = "Love Fruit",
+	["15116730130"] = "Love Fruit",
+
+	-- Sound Fruit
+	["14661873358"] = "Sound Fruit",
+	["14661873405"] = "Sound Fruit",
+	["14661873374"] = "Sound Fruit",
+	["14661873433"] = "Sound Fruit",
+	["14661873430"] = "Sound Fruit",
+	["14661873442"] = "Sound Fruit",
+	["14661873489"] = "Sound Fruit",
+
+	-- Blizzard Fruit
+	["15100384816"] = "Blizzard Fruit",
+	["15100384823"] = "Blizzard Fruit",
+	["15100384835"] = "Blizzard Fruit",
+	["15100384818"] = "Blizzard Fruit",
+
+	-- Mammoth Fruit
+	["14661837634"] = "Mammoth Fruit",
+	["14661837606"] = "Mammoth Fruit",
+	["14661837669"] = "Mammoth Fruit",
+	["14661837648"] = "Mammoth Fruit",
+	["14661837654"] = "Mammoth Fruit",
+	["14661837626"] = "Mammoth Fruit",
+
+	-- T-Rex Fruit
+	["15708895165"] = "T-Rex Fruit",
+	["15708895136"] = "T-Rex Fruit",
+	["15708895164"] = "T-Rex Fruit",
+
+	-- Dough Fruit
+	["15100273645"] = "Dough Fruit",
+	["15100273652"] = "Dough Fruit",
+	["15100273681"] = "Dough Fruit",
+	["15100273676"] = "Dough Fruit",
+	["15100273711"] = "Dough Fruit",
+	["15100273700"] = "Dough Fruit",
+
+	-- Shadow Fruit
+	["15112263502"] = "Shadow Fruit",
+	["15112263532"] = "Shadow Fruit",
+	["15112263538"] = "Shadow Fruit",
+	["15112263524"] = "Shadow Fruit",
+	["15112263547"] = "Shadow Fruit",
+	["15112263572"] = "Shadow Fruit",
+
+	-- Gravity Fruit
+	["71154316449302"]  = "Gravity Fruit",
+	["90582921962686"]  = "Gravity Fruit",
+	["81439904755626"]  = "Gravity Fruit",
+	["77086628792470"]  = "Gravity Fruit",
+	["140228484832614"] = "Gravity Fruit",
+	["97555594643911"]  = "Gravity Fruit",
+
+	-- Spirit Fruit
+	["11908375285"] = "Spirit Fruit",
+	["11908375264"] = "Spirit Fruit",
+	["11908375830"] = "Spirit Fruit",
+	["11908375463"] = "Spirit Fruit",
+	["11908375441"] = "Spirit Fruit",
+	["11908375481"] = "Spirit Fruit",
+	["11908375504"] = "Spirit Fruit",
+	["11908375516"] = "Spirit Fruit",
+	["11908375575"] = "Spirit Fruit",
+	["11908375614"] = "Spirit Fruit",
+	["11908375613"] = "Spirit Fruit",
+
+	-- Venom Fruit
+	["1"] = "Venom Fruit",
+
+	-- Control Fruit
+	["136707235551517"] = "Control Fruit",
+	["98129062128834"]  = "Control Fruit",
+	["105994612665472"] = "Control Fruit",
+	["97140735760657"]  = "Control Fruit",
+	["79849525547834"]  = "Control Fruit",
+
+	-- Yeti Fruit
+	["101378450824208"] = "Yeti Fruit",
+	["96747665551647"]  = "Yeti Fruit",
+	["88384687280941"]  = "Yeti Fruit",
+	["104186682137630"] = "Yeti Fruit",
+	["129838061663109"] = "Yeti Fruit",
+
+	-- Gas Fruit
+	["86024571204851"]  = "Gas Fruit",
+	["102564092226931"] = "Gas Fruit",
+	["104856271432800"] = "Gas Fruit",
+	["108155168510842"] = "Gas Fruit",
+	["75243566554087"]  = "Gas Fruit",
+	["131857455551120"] = "Gas Fruit",
+
+	-- Tiger Fruit
+	["87218479448975"] = "Tiger Fruit",
+	["99189853190350"] = "Tiger Fruit",
+	["79394457898514"] = "Tiger Fruit",
+	["91925899960555"] = "Tiger Fruit",
+	["82561482973191"] = "Tiger Fruit",
+	["77429213241575"] = "Tiger Fruit",
+
+	-- Kitsune Fruit
+	["15482881956"] = "Kitsune Fruit",
+	["15482881910"] = "Kitsune Fruit",
+	["15482881907"] = "Kitsune Fruit",
+	["15482881888"] = "Kitsune Fruit",
+	["15482881962"] = "Kitsune Fruit",
+	["15482881967"] = "Kitsune Fruit",
+
+}
