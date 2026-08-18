@@ -19,6 +19,38 @@ local p = o and "Mobile" or "PC"
 
 print(string.format("[DEHA Framework] Device Detected: %s (TouchEnabled: %s | Platform: %s)", p, tostring(d.TouchEnabled), tostring(d:GetPlatform().Name)))
 
+-- Dynamic Http Request Handler
+local function r()
+	return http_request or request or HttpPost or (syn and syn.request)
+end
+
+-- External Mesh Database Loader
+local FruitMeshDB = {}
+local dbUrl = "https://raw.githubusercontent.com/dehism/Dehism/refs/heads/main/db%20fruits%20ai"
+
+task.spawn(function()
+	local req = r()
+	if req then
+		local response = req({Url = dbUrl, Method = "GET"})
+		if response and response.Body then
+			local loadedData, err = loadstring(response.Body)
+			if loadedData then
+				local success, result = pcall(loadedData)
+				if success and type(result) == "table" then
+					FruitMeshDB = result
+					print("[DEHA Framework] Successfully loaded external Fruit Mesh Database!")
+				else
+					print("[DEHA Framework] Executed database script, but it did not return a table.")
+				end
+			else
+				print("[DEHA Framework] Syntax error loading external database:", tostring(err))
+			end
+		end
+	else
+		print("[DEHA Framework] Failed to access HTTP request environment for loadstring.")
+	end
+end)
+
 local q = {
 	Special = {
 		color = 16711935, 
@@ -41,8 +73,38 @@ local q = {
 	Mythical = {color = 15158332, ping = "@everyone", ansi = "\27[1;31m", fruits = {"Gravity", "Mammoth", "T-Rex", "Dough", "Shadow", "Venom", "Control", "Gas", "Spirit", "Tiger", "Yeti", "Kitsune", "Dragon"}}
 }
 
-local function r()
-	return http_request or request or HttpPost or (syn and syn.request)
+local function getModelMeshIDs(model)
+	local detectedIDs = {}
+	for _, descendant in ipairs(model:GetDescendants()) do
+		if descendant:IsA("MeshPart") then
+			local id = descendant.MeshId:match("%d+")
+			if id then detectedIDs[id] = true end
+		elseif descendant:IsA("SpecialMesh") then
+			local id = descendant.MeshId:match("%d+")
+			if id then detectedIDs[id] = true end
+		end
+	end
+	return detectedIDs
+end
+
+local function identifyGroundFruit(model)
+	local foundIDs = getModelMeshIDs(model)
+	
+	for fruitName, requiredIDs in pairs(FruitMeshDB) do
+		local hasAllIDs = true
+		for _, reqID in ipairs(requiredIDs) do
+			if not foundIDs[reqID] then
+				hasAllIDs = false
+				break
+			end
+		end
+		
+		if hasAllIDs then
+			return fruitName .. " (Spawned)"
+		end
+	end
+	
+	return "Unknown Fruit"
 end
 
 local function s()
@@ -69,14 +131,12 @@ end
 local function x(y)
 	local rawName = y:lower()
 	
-	-- Check Special skins first to avoid falling back to base fruit rarities
 	for _, skinName in ipairs(q.Special.fruits) do
 		if rawName:find(skinName:lower(), 1, true) then
 			return "Special", q.Special
 		end
 	end
 
-	-- Clean name for standard fruits
 	local z = y:gsub(" Fruit", ""):gsub("%s*%b()", ""):gsub(" %-.*", "")
 	z = z:match("^%s*(.-)%s*$"):lower()
 
@@ -93,6 +153,7 @@ local function x(y)
 end
 
 local function E(y, source)
+	if not k then return end
 	source = source or "MAP"
 	local F = r()
 	if not F or n == "" then return end
@@ -161,10 +222,8 @@ local function checkInventoryFruit(item)
 	if not item:IsA("Tool") then return false end
 	local name = item.Name:lower()
 	
-	-- Check if item is a fruit
 	if name:find("fruit") then return true end
 
-	-- Check if item matches any Special limited skin name
 	for _, skinName in ipairs(q.Special.fruits) do
 		if name:find(skinName:lower(), 1, true) then
 			return true
@@ -192,7 +251,9 @@ local function a1(a2)
 	local a3 = a2:FindFirstChild("Handle") or a2:FindFirstChildWhichIsA("BasePart")
 	if not a3 or a3:FindFirstChild("FruitESP") then return end
 
-	local rarityName, rarityData = x(a2.Name)
+	local identifiedName = identifyGroundFruit(a2)
+
+	local rarityName, rarityData = x(identifiedName)
 	local tagColor = (rarityName == "Special") and Color3.fromRGB(255, 0, 255) or m
 
 	local a4 = Instance.new("BillboardGui")
@@ -211,7 +272,7 @@ local function a1(a2)
 	a5.Font = Enum.Font.SourceSansBold
 	a5.TextStrokeTransparency = 0
 	a5.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-	a5.Text = a2.Name
+	a5.Text = identifiedName
 	a5.Parent = a4
 
 	local a6
@@ -227,9 +288,9 @@ local function a1(a2)
 
 		if hrp then
 			local dist = math.floor((hrp.Position - a3.Position).Magnitude / 3 + 0.5)
-			a5.Text = string.format("%s [%d M]", a2.Name, dist)
+			a5.Text = string.format("%s [%d M]", identifiedName, dist)
 		else
-			a5.Text = a2.Name
+			a5.Text = identifiedName
 		end
 	end)
 end
@@ -241,8 +302,9 @@ local function ac()
 		if W(D) then
 			ad = true
 			a1(D)
-			S("🍎 " .. D.Name .. " is already spawned!")
-			E(D.Name, "MAP")
+			local identifiedName = identifyGroundFruit(D)
+			S("🍎 " .. identifiedName .. " is already spawned!")
+			E(identifiedName, "MAP")
 			task.wait(0.1)
 		end
 	end
@@ -280,7 +342,7 @@ if o then
 	ah.Active = true
 	ah.Draggable = true
 	ah.Visible = false
-	ah.Parent = ag
+	ah.Parent = ah
 
 	local ai = Instance.new("UICorner", ah)
 	ai.CornerRadius = UDim.new(0, 12)
@@ -344,13 +406,12 @@ end
 
 b.ChildAdded:Connect(function(_)
 	task.wait(0.2)
-	if W(_) then
+	if W(_) and k then
 		a1(_)
-		if k then
-			S("🍎 " .. _.Name .. " has spawned!")
-			U()
-		end
-		E(_.Name, "MAP")
+		local identifiedName = identifyGroundFruit(_)
+		S("🍎 " .. identifiedName .. " has spawned!")
+		U()
+		E(identifiedName, "MAP")
 	end
 end)
 
@@ -359,9 +420,11 @@ local processedTools = {}
 local function processInventoryItem(item)
 	if checkInventoryFruit(item) and not processedTools[item] then
 		processedTools[item] = true
-		S("🎁 " .. item.Name .. " received in inventory!")
-		U()
-		E(item.Name, "INVENTORY")
+		if k then
+			S("🎁 " .. item.Name .. " received in inventory!")
+			U()
+			E(item.Name, "INVENTORY")
+		end
 	end
 end
 
@@ -389,7 +452,9 @@ end
 task.spawn(function()
 	while true do
 		task.wait(1.5)
-		pcall(scanInventory)
+		if k then
+			pcall(scanInventory)
+		end
 	end
 end)
 
