@@ -24,7 +24,7 @@ local function r()
 	return http_request or request or HttpPost or (syn and syn.request)
 end
 
--- External Mesh Database Loader
+-- External Mesh Database Loader (Flat ID -> Name structure)
 local FruitMeshDB = {}
 local dbUrl = "https://raw.githubusercontent.com/dehism/Dehism/refs/heads/main/db%20fruits%20ai"
 
@@ -75,35 +75,25 @@ local q = {
 }
 
 local function getModelMeshIDs(model)
-	local detectedIDs = {}
-	for _, descendant in ipairs(model:GetDescendants()) do
-		if descendant:IsA("MeshPart") then
-			local id = descendant.MeshId:match("%d+")
-			if id then detectedIDs[id] = true end
-		elseif descendant:IsA("SpecialMesh") then
-			local id = descendant.MeshId:match("%d+")
-			if id then detectedIDs[id] = true end
+	local ids = {}
+	for _, desc in ipairs(model:GetDescendants()) do
+		if (desc:IsA("MeshPart") or desc:IsA("SpecialMesh")) and desc.MeshId ~= "" then
+			local id = desc.MeshId:match("%d+")
+			if id then
+				ids[id] = true
+			end
 		end
 	end
-	return detectedIDs
+	return ids
 end
 
 local function identifyGroundFruit(model)
 	local foundIDs = getModelMeshIDs(model)
 	
-	for fruitName, requiredIDs in pairs(FruitMeshDB) do
-		if type(requiredIDs) == "table" and #requiredIDs > 0 then
-			local hasAllIDs = true
-			for _, reqID in ipairs(requiredIDs) do
-				if not foundIDs[tostring(reqID)] then
-					hasAllIDs = false
-					break
-				end
-			end
-			
-			if hasAllIDs then
-				return fruitName .. " (Spawned)"
-			end
+	-- Checks each mesh inside the model against your flat MeshID -> Name database
+	for meshID in pairs(foundIDs) do
+		if FruitMeshDB[meshID] then
+			return FruitMeshDB[meshID]
 		end
 	end
 	
