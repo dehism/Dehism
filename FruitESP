@@ -33,7 +33,8 @@ task.spawn(function()
 	if req then
 		local response = req({Url = dbUrl, Method = "GET"})
 		if response and response.Body then
-			local loadedData, err = loadstring(response.Body)
+			local loadFunc = getgenv and getgenv().loadstring or loadstring
+			local loadedData, err = loadFunc(response.Body)
 			if loadedData then
 				local success, result = pcall(loadedData)
 				if success and type(result) == "table" then
@@ -91,16 +92,18 @@ local function identifyGroundFruit(model)
 	local foundIDs = getModelMeshIDs(model)
 	
 	for fruitName, requiredIDs in pairs(FruitMeshDB) do
-		local hasAllIDs = true
-		for _, reqID in ipairs(requiredIDs) do
-			if not foundIDs[reqID] then
-				hasAllIDs = false
-				break
+		if type(requiredIDs) == "table" and #requiredIDs > 0 then
+			local hasAllIDs = true
+			for _, reqID in ipairs(requiredIDs) do
+				if not foundIDs[tostring(reqID)] then
+					hasAllIDs = false
+					break
+				end
 			end
-		end
-		
-		if hasAllIDs then
-			return fruitName .. " (Spawned)"
+			
+			if hasAllIDs then
+				return fruitName .. " (Spawned)"
+			end
 		end
 	end
 	
@@ -342,7 +345,7 @@ if o then
 	ah.Active = true
 	ah.Draggable = true
 	ah.Visible = false
-	ah.Parent = ah
+	ah.Parent = ag
 
 	local ai = Instance.new("UICorner", ah)
 	ai.CornerRadius = UDim.new(0, 12)
