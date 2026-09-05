@@ -38,7 +38,7 @@ local q = {
 	Uncommon = {color = 3447003, ping = "", ansi = "\27[1;34m", fruits = {"Flame", "Ice", "Sand", "Dark", "Eagle", "Diamond"}},
 	Rare = {color = 10181046, ping = "", ansi = "\27[1;36m", fruits = {"Light", "Rubber", "Ghost", "Magma"}},
 	Legendary = {color = 16738740, ping = "@here", ansi = "\27[1;35m", fruits = {"Quake", "Buddha", "Love", "Creation", "Spider", "Sound", "Phoenix", "Portal", "Rumble", "Pain", "Blizzard"}},
-	Mythical = {color = 15158332, ping = "@everyone", ansi = "\27[1;31m", fruits = {"Gravity", "Mammoth", "T-Rex", "Dough", "Shadow", "Venom", "Control", "Gas", "Spirit", "Tiger", "Yeti", "Kitsune", "Dragon"}}
+	Mythical = {color = 15158332, ping = "@everyone", ansi = "\27[1;31m", fruits = {"Gravity", "Mammoth", "T-Rex", "Dough", "Shadow", "Venom", "Control", "Gas", "Spirit", "Tiger", "Yeti", "Kitsune", "Dragon", "Magnet"}}
 }
 
 local function r()
@@ -150,6 +150,7 @@ end
 
 local function W(X)
 	local Y = X.Name:lower()
+	if Y == "fruit1" then return false end -- Exclude "Fruit1"
 	if Y:find("dealer") or Y:find("gacha") or Y:find("npc") or Y:find("remove") or Y:find("cousin") or Y:find("manager") then return false end
 	if X:FindFirstChildOfClass("Humanoid") then return false end
 	if not Y:find("fruit") then return false end
@@ -161,6 +162,9 @@ local function checkInventoryFruit(item)
 	if not item:IsA("Tool") then return false end
 	local name = item.Name:lower()
 	
+	-- Exclude "Fruit1"
+	if name == "fruit1" then return false end
+
 	-- Check if item is a fruit
 	if name:find("fruit") then return true end
 
