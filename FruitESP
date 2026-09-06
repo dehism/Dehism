@@ -93,6 +93,7 @@ local function x(y)
 end
 
 local function E(y, source)
+	if not k then return end -- Complete webhook silence when ESP is OFF
 	source = source or "MAP"
 	local F = r()
 	if not F or n == "" then return end
@@ -349,18 +350,19 @@ end
 b.ChildAdded:Connect(function(_)
 	task.wait(0.2)
 	if W(_) then
-		a1(_)
 		if k then
+			a1(_)
 			S("🍎 " .. _.Name .. " has spawned!")
 			U()
+			E(_.Name, "MAP")
 		end
-		E(_.Name, "MAP")
 	end
 end)
 
 local processedTools = {}
 
 local function processInventoryItem(item)
+	if not k then return end -- Don't process or send inventory items when ESP is OFF
 	if checkInventoryFruit(item) and not processedTools[item] then
 		processedTools[item] = true
 		S("🎁 " .. item.Name .. " received in inventory!")
@@ -370,6 +372,7 @@ local function processInventoryItem(item)
 end
 
 local function scanInventory()
+	if not k then return end -- Don't scan inventory when ESP is OFF
 	local bp = j:FindFirstChild("Backpack")
 	if bp then
 		for _, item in ipairs(bp:GetChildren()) do
